@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Menu, Search, User, Settings, LogOut } from "lucide-react";
+import {
+  Menu,
+  Search,
+  User,
+  Settings,
+  LogOut,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -22,6 +30,8 @@ const Layout: React.FC<LayoutProps> = ({
   currentPage,
   onNavigate,
 }) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   const menuItems = [
     { name: "Dashboard", icon: "dashboard", active: true },
     { name: "Page 1", icon: "page1", requiresProject: true },
@@ -34,22 +44,44 @@ const Layout: React.FC<LayoutProps> = ({
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Left Sidebar */}
-      <div className="w-64 bg-white shadow-md">
-        <div className="p-4 flex items-center">
-          <img
-            src="/src/assets/images/wblogo.svg"
-            alt="Logo"
-            className={`transition-all duration-300 ease-in-out ${
-              currentProject ? "h-6 w-6 mr-2" : "h-12 w-12 mr-0 mb-2"
-            }`}
-          />
-          <h1
-            className={`font-bold transition-all duration-300 ease-in-out ${
-              currentProject ? "text-xl ml-2" : "text-2lg mt-2"
+      <div
+        className={`bg-white shadow-md transition-all duration-300 ease-in-out ${
+          isCollapsed ? "w-20" : "w-64"
+        }`}
+      >
+        <div className="p-4 flex items-center justify-between">
+          <div className="flex items-center">
+            <img
+              src="/src/assets/images/logo-universal.png"
+              alt="Logo"
+              className={`transition-all duration-300 ease-in-out ${
+                isCollapsed ? "h-14 w-14 min-w-[30px]" : "h-14 w-14 mr-2"
+              }`}
+            />
+            {!isCollapsed && (
+              <h1
+                className="font-bold text-lg ml-2"
+                title={currentProject ? currentProject : "Base Wails"}
+              >
+                {currentProject ? currentProject : "Base Wails"}
+              </h1>
+            )}
+          </div>
+          <Button
+            variant="ghost"
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className={`ml-2 transition-all duration-300 ease-in-out ${
+              isCollapsed
+                ? "transform translate-x-[-20px] rotate-180"
+                : "transform translate-x-0 rotate-0"
             }`}
           >
-            {currentProject ? currentProject : "Base Wails"}
-          </h1>
+            {isCollapsed ? (
+              <ChevronLeft className="h-5 w-5" />
+            ) : (
+              <ChevronLeft className="h-5 w-5" />
+            )}
+          </Button>
         </div>
         <nav>
           {menuItems.map((item) => (
