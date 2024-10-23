@@ -36,3 +36,39 @@ func (a *App) OpenMultipleFilesDialog(options runtime.OpenDialogOptions) ([]stri
     return runtime.OpenMultipleFilesDialog(a.ctx, options)
 }
 
+// Menu handler functions
+func (a *App) HandleAbout() {
+    runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+        Type:    runtime.InfoDialog,
+        Title:   "About",
+        Message: "Base Wails Application v1.0.0",
+    })
+}
+
+func (a *App) HandleQuit() {
+    runtime.Quit(a.ctx)
+}
+
+func (a *App) HandlePreferences() {
+    runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+        Type:    runtime.InfoDialog,
+        Title:   "Preferences",
+        Message: "Preferences dialog would open here",
+    })
+}
+
+func (a *App) HandleFileNew() {
+    runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+        Type:    runtime.InfoDialog,
+        Title:   "New File",
+        Message: "Create new file functionality would go here",
+    })
+}
+
+func (a *App) HandleFileOpen() {
+    runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+        Type:    runtime.InfoDialog,
+        Title:   "Open File",
+        Message: "Open file functionality would go here",
+    })
+}

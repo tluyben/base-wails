@@ -4,6 +4,16 @@ import {frontend} from '../models';
 
 export function Greet(arg1:string):Promise<string>;
 
+export function HandleAbout():Promise<void>;
+
+export function HandleFileNew():Promise<void>;
+
+export function HandleFileOpen():Promise<void>;
+
+export function HandlePreferences():Promise<void>;
+
+export function HandleQuit():Promise<void>;
+
 export function OpenDirectoryDialog(arg1:frontend.OpenDialogOptions):Promise<string>;
 
 export function OpenMultipleFilesDialog(arg1:frontend.OpenDialogOptions):Promise<Array<string>>;

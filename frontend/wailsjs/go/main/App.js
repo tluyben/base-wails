@@ -6,6 +6,26 @@ export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
 
+export function HandleAbout() {
+  return window['go']['main']['App']['HandleAbout']();
+}
+
+export function HandleFileNew() {
+  return window['go']['main']['App']['HandleFileNew']();
+}
+
+export function HandleFileOpen() {
+  return window['go']['main']['App']['HandleFileOpen']();
+}
+
+export function HandlePreferences() {
+  return window['go']['main']['App']['HandlePreferences']();
+}
+
+export function HandleQuit() {
+  return window['go']['main']['App']['HandleQuit']();
+}
+
 export function OpenDirectoryDialog(arg1) {
   return window['go']['main']['App']['OpenDirectoryDialog'](arg1);
 }
