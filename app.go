@@ -72,3 +72,76 @@ func (a *App) HandleFileOpen() {
         Message: "Open file functionality would go here",
     })
 }
+
+// Edit menu handlers with clipboard operations
+func (a *App) HandleCut() {
+	runtime.WindowExecJS(a.ctx, `
+		var el = document.activeElement;
+		if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA')) {
+			const start = el.selectionStart;
+			const end = el.selectionEnd;
+			const selected = el.value.substring(start, end);
+			if (selected) {
+				window.runtime.ClipboardSetText(selected).then(() => {
+					el.value = el.value.substring(0, start) + el.value.substring(end);
+					el.setSelectionRange(start, start);
+					// Reset React's internal value tracker
+					const tracker = el._valueTracker;
+					if (tracker) {
+						tracker.setValue('');
+					}
+					// Trigger input event for React state update
+					const event = new Event('input', { bubbles: true });
+					el.dispatchEvent(event);
+				});
+			}
+		}
+	`)
+}
+
+func (a *App) HandleCopy() {
+	runtime.WindowExecJS(a.ctx, `
+		var el = document.activeElement;
+		if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA')) {
+			const start = el.selectionStart;
+			const end = el.selectionEnd;
+			const selected = el.value.substring(start, end);
+			if (selected) {
+				window.runtime.ClipboardSetText(selected);
+			}
+		}
+	`)
+}
+
+func (a *App) HandlePaste() {
+	runtime.WindowExecJS(a.ctx, `
+		var el = document.activeElement;
+		if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA')) {
+			const start = el.selectionStart;
+			const end = el.selectionEnd;
+			window.runtime.ClipboardGetText().then(text => {
+				if (text) {
+					el.value = el.value.substring(0, start) + text + el.value.substring(end);
+					el.setSelectionRange(start + text.length, start + text.length);
+					// Reset React's internal value tracker
+					const tracker = el._valueTracker;
+					if (tracker) {
+						tracker.setValue('');
+					}
+					// Trigger input event for React state update
+					const event = new Event('input', { bubbles: true });
+					el.dispatchEvent(event);
+				}
+			});
+		}
+	`)
+}
+
+func (a *App) HandleSelectAll() {
+	runtime.WindowExecJS(a.ctx, `
+		var el = document.activeElement;
+		if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA')) {
+			el.select();
+		}
+	`)
+}

@@ -8,6 +8,7 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v2/pkg/options/mac"
 )
 
 //go:embed all:frontend/dist
@@ -32,9 +33,10 @@ func main() {
 	editMenu.AddText("Undo", keys.CmdOrCtrl("z"), nil)
 	editMenu.AddText("Redo", keys.CmdOrCtrl("y"), nil)
 	editMenu.AddSeparator()
-	editMenu.AddText("Cut", keys.CmdOrCtrl("x"), nil)
-	editMenu.AddText("Copy", keys.CmdOrCtrl("c"), nil)
-	editMenu.AddText("Paste", keys.CmdOrCtrl("v"), nil)
+	editMenu.AddText("Cut", keys.CmdOrCtrl("x"), func(_ *menu.CallbackData) { app.HandleCut() })
+	editMenu.AddText("Copy", keys.CmdOrCtrl("c"), func(_ *menu.CallbackData) { app.HandleCopy() })
+	editMenu.AddText("Paste", keys.CmdOrCtrl("v"), func(_ *menu.CallbackData) { app.HandlePaste() })
+	editMenu.AddText("Select All", keys.CmdOrCtrl("a"), func(_ *menu.CallbackData) { app.HandleSelectAll() })
 	editMenu.AddSeparator()
 	editMenu.AddText("Preferences", keys.CmdOrCtrl(","), func(_ *menu.CallbackData) { app.HandlePreferences() })
 
@@ -56,6 +58,15 @@ func main() {
 		Bind: []interface{}{
 			app,
 		},
+		// Mac specific options
+		Mac: &mac.Options{
+			About: &mac.AboutInfo{
+				Title:   "base-wails",
+				Message: "© 2024",
+			},
+		},
+		// Enable native context menu
+		EnableDefaultContextMenu: true,
 	})
 
 	if err != nil {
